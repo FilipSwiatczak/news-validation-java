@@ -9,8 +9,8 @@
         <version>2.6.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.swtestacademy</groupId>
-    <artifactId>selenium-springboot</artifactId>
+    <groupId>com.newsvalidation</groupId>
+    <artifactId>news-validation</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
