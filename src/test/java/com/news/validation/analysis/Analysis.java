@@ -1,7 +1,6 @@
 package com.news.validation.analysis;
 
-import io.cucumber.spring.ScenarioScope;
-import org.springframework.stereotype.Component;
+import org.junit.jupiter.api.Test;
 import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class Analysis {
     public ArrayList<String> articleTitles = new ArrayList<String>();
     public HashMap<String, Map<String, Integer>> articleResultsMap = new HashMap<String, Map<String, Integer>>();
 
-    static Map<String, ArrayList<String>> googleSearchResultsPerArticleMap = new HashMap<String, ArrayList<String>>();
+    public Map<String, ArrayList<String>> googleSearchResultsPerArticleMap = new HashMap<String, ArrayList<String>>();
 
     public void storeGoogleSearchResult(String articleTitle, ArrayList<String> googleSearchResults) {
         googleSearchResultsPerArticleMap.put(articleTitle, googleSearchResults);
@@ -87,6 +86,9 @@ public class Analysis {
                 pass = false;
                 logMessage.append(String.format("FAIL: \"%s\"\n %d/%d keywords >= %d hits each\n", articleTitle, passingKeywordCount, keywordNo, threshold));
             }
+        }
+        if (articleResultsMap.keySet().size() == 0) {
+            logMessage.append("No results to analyse");
         }
         return new Pair<Boolean, String>(pass, logMessage.toString());
     }
