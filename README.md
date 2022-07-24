@@ -1,3 +1,4 @@
+![Build status](https://github.com/FilipSwiatczak/news-validation-java/actions/workflows/maven.yml/badge.svg?event=push)
 # News Validation Test Project
 
 
@@ -30,4 +31,6 @@ It does so by running checks against search engines and validating number of key
 - scrape article bodies and store alongside
 - connect an open-source API endpoint for non web based validation
 - connect actual NLP model for real time analysis
+- add semantic versioning and CHANGELOG.md generation
+- add vulnerability scanning
 
