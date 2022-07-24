@@ -1,7 +1,10 @@
 package com.news.validation.pages;
 
 import com.news.validation.utils.LogUtil;
+
+import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import org.openqa.selenium.By;
@@ -42,9 +45,15 @@ public abstract class BasePage {
             .getClass()
             .getName()
             .contains("By")) {
-            wait.until(ExpectedConditions.presenceOfElementLocated((By) elementAttr));
+            wait
+                    .withTimeout(Duration.ofSeconds(30 ))
+                    .pollingEvery(Duration.ofSeconds(2))
+                    .until(ExpectedConditions.presenceOfElementLocated((By) elementAttr));
         } else {
-            wait.until(ExpectedConditions.visibilityOf((WebElement) elementAttr));
+            wait
+                    .withTimeout(Duration.ofSeconds(30 ))
+                    .pollingEvery(Duration.ofSeconds(2))
+                    .until(ExpectedConditions.visibilityOf((WebElement) elementAttr));
         }
     }
 
@@ -53,9 +62,15 @@ public abstract class BasePage {
             .getClass()
             .getName()
             .contains("By")) {
-            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy((By) elementAttr));
+            wait
+                    .withTimeout(Duration.ofSeconds(30 ))
+                    .pollingEvery(Duration.ofSeconds(2))
+                    .until(ExpectedConditions.presenceOfAllElementsLocatedBy((By) elementAttr));
         } else {
-            wait.until(ExpectedConditions.visibilityOfAllElements((WebElement) elementAttr));
+            wait
+                    .withTimeout(Duration.ofSeconds(30 ))
+                    .pollingEvery(Duration.ofSeconds(2))
+                    .until(ExpectedConditions.visibilityOfAllElements((WebElement) elementAttr));
         }
     }
 

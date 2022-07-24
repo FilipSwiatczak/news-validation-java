@@ -1,6 +1,7 @@
 package com.news.validation.configuration;
 
 import com.news.validation.analysis.Analysis;
+import com.news.validation.analysis.TestData;
 import com.news.validation.annotations.LazyConfiguration;
 import com.news.validation.annotations.WebdriverScopeBean;
 import org.openqa.selenium.JavascriptExecutor;
@@ -21,5 +22,11 @@ public class OtherBeansConfigs {
     @Scope("cucumber-glue")
     public Analysis analysis() {
         return new Analysis();
+    }
+
+    @Bean
+    @Scope("cucumber-glue")
+    public TestData testData() {
+        return new TestData();
     }
 }

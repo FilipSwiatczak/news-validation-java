@@ -1,6 +1,7 @@
 package com.news.validation.pages;
 
 import com.news.validation.analysis.Analysis;
+import com.news.validation.analysis.TestData;
 import com.news.validation.annotations.LazyAutowired;
 import com.news.validation.annotations.LazyComponent;
 import org.junit.jupiter.api.Assertions;
@@ -10,14 +11,18 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @LazyComponent
 public class HomePage extends BasePage {
 
     @Autowired
     private Analysis analysis;
+    @Autowired
+    private TestData testData;
 
     @Value("${application.url}")
     private String baseURL;
@@ -30,6 +35,13 @@ public class HomePage extends BasePage {
     By allArticleTitles = By.cssSelector("div > div > div > ul > li > div > div > a");
     By googleSearchResults = By.cssSelector(" div > div > div > div > div > div.g > div > div > div > a > h3");
     By googleSearchAcceptAll = By.cssSelector("div[aria-label=\"Before you continue to Google Search\"] button:nth-child(2):not([role=\"link\"]) > div[role=\"none\"]");
+
+    By credibleSearchBox = By.cssSelector("input[placeholder=\"Search Topic or type a URL\"]");
+    By credibleSearchButton = By.cssSelector("button.search-button");
+
+    By credibleScoreGrades = By.cssSelector("button.score-button");
+
+    By credibleResultsLegend = By.cssSelector("div.legend > div.legend-row");
 
     //*********Page Methods*********
     //Go to Homepage
@@ -98,5 +110,28 @@ public class HomePage extends BasePage {
         Assertions.assertTrue(driver.findElement(homePageLogo).isDisplayed());
         return this;
 
+    }
+
+    public void searchIsThisCredibleForThisArticleTitle() {
+        driver.get("https://www.isthiscredible.com/");
+        waitElement(credibleSearchBox);
+        writeText(credibleSearchBox, analysis.articleTitles.get(analysis.articleTitles.size() - 1));
+        // test
+//        writeText(credibleSearchBox, "Dover travel chaos enters third day with long queues for Eurotunnel");
+        click(credibleSearchButton);
+
+        waitElement(credibleResultsLegend);
+        List<WebElement> scoreGradeButtons = driver.findElements(credibleScoreGrades);
+        if (scoreGradeButtons.size() == 0) {
+            logger.info("No credible results found");
+        } else {
+            driver.findElements(credibleScoreGrades).forEach(element -> {
+                int score = Integer.parseInt(
+                        element.getText()
+                                .replaceAll("[^0-9]", ""));
+                testData.credibleScoreGradesList.add(score);
+            });
+            logger.info(testData.credibleScoreGradesList.toString());
+        }
     }
 }
